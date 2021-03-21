@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"os"
@@ -8,7 +9,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/branogarbo/imgcli/util"
+	imgcli "github.com/branogarbo/imgcli/util"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -47,26 +48,39 @@ func main() {
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	var (
+		msgHead     string
+		imgUrl      string
+		pixelString string
+		errMsg      string
+		err         error
+	)
+
 	if m.Author.ID == s.State.User.ID {
 		return
 	}
 
 	// using janky command code for now
 
-	msgHead := m.Content[:4]
+	msgHead = m.Content[:4]
 
 	if msgHead == "!img" {
-		imgUrl := m.Content[5:]
+		if m.Content == msgHead {
+			err = errors.New("url not provided")
+		} else {
+			imgUrl = m.Content[5:]
 
-		pixelString, err := util.OutputImage(util.OutputConfig{
-			Src:          strings.TrimSpace(imgUrl),
-			OutputMode:   "ascii",
-			AsciiPattern: " .:-=+*#%@",
-			IsUseWeb:     true,
-			OutputWidth:  66,
-		})
+			pixelString, err = imgcli.OutputImage(imgcli.OutputConfig{
+				Src:          strings.TrimSpace(imgUrl),
+				OutputMode:   "ascii",
+				AsciiPattern: " .:-=+*#%@",
+				IsUseWeb:     true,
+				OutputWidth:  66,
+			})
+		}
+
 		if err != nil {
-			errMsg := fmt.Sprintf("imgcli/util: failed to output image, %v", err)
+			errMsg = fmt.Sprintf("imgcli/util: failed to output image, %v", err)
 
 			fmt.Println(errMsg)
 			pixelString = errMsg
