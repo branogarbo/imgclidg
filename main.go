@@ -92,20 +92,21 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	pixeleString, err := util.OutputImage(util.OutputConfig{
-		Src:         "https://static.wikia.nocookie.net/among-us-wiki/images/8/84/Among_Us.png/revision/latest?cb=20201019142953",
-		OutputMode:  "ascii",
-		IsUseWeb:    true,
-		OutputWidth: 66,
+	pixelString, err := util.OutputImage(util.OutputConfig{
+		Src:          "https://static.wikia.nocookie.net/among-us-wiki/images/8/84/Among_Us.png/revision/latest?cb=20201019142953",
+		OutputMode:   "ascii",
+		AsciiPattern: " .:-=+*#%@",
+		IsUseWeb:     true,
+		OutputWidth:  66,
 	})
 	if err != nil {
 		errMsg := fmt.Sprintf("imgcli/util: failed to output image, %v", err)
 
 		fmt.Println(errMsg)
-		pixeleString = errMsg
+		pixelString = errMsg
 	}
 
 	if m.Content == "!img" {
-		s.ChannelMessageSend(m.ChannelID, "```"+pixeleString+"```")
+		s.ChannelMessageSend(m.ChannelID, "```"+pixelString+"```")
 	}
 }
