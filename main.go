@@ -1,45 +1,3 @@
-// package main
-
-// import (
-// 	"flag"
-// 	"log"
-
-// 	dg "github.com/bwmarrin/discordgo"
-// )
-
-// var (
-// 	token   string
-// 	session *dg.Session
-// 	err     error
-// )
-
-// func init() {
-// 	flag.StringVar(&token, "t", "", "Bot access token.")
-// 	flag.Parse()
-// }
-
-// func main() {
-// 	session, err = dg.New("Bot " + token)
-// 	if err != nil {
-// 		log.Fatal("failed to start bot:", err)
-// 	}
-
-// 	session.Open()
-// 	defer session.Close()
-
-// 	session.AddHandler(func(s *dg.Session, e *dg.MessageCreate) {
-// 		var (
-// 			msg string = e.Message.Content
-// 		)
-
-// 		_, err = s.ChannelMessageSend("imgcli", msg)
-// 		if err != nil {
-// 			log.Fatal("failed to send message:", err)
-// 		}
-
-// 	})
-// }
-
 package main
 
 import (
@@ -47,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/branogarbo/imgcli/util"
@@ -92,21 +51,27 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	pixelString, err := util.OutputImage(util.OutputConfig{
-		Src:          "https://static.wikia.nocookie.net/among-us-wiki/images/8/84/Among_Us.png/revision/latest?cb=20201019142953",
-		OutputMode:   "ascii",
-		AsciiPattern: " .:-=+*#%@",
-		IsUseWeb:     true,
-		OutputWidth:  66,
-	})
-	if err != nil {
-		errMsg := fmt.Sprintf("imgcli/util: failed to output image, %v", err)
+	// using janky command code for now
 
-		fmt.Println(errMsg)
-		pixelString = errMsg
-	}
+	msgHead := m.Content[:4]
 
-	if m.Content == "!img" {
+	if msgHead == "!img" {
+		imgUrl := m.Content[5:]
+
+		pixelString, err := util.OutputImage(util.OutputConfig{
+			Src:          strings.TrimSpace(imgUrl),
+			OutputMode:   "ascii",
+			AsciiPattern: " .:-=+*#%@",
+			IsUseWeb:     true,
+			OutputWidth:  66,
+		})
+		if err != nil {
+			errMsg := fmt.Sprintf("imgcli/util: failed to output image, %v", err)
+
+			fmt.Println(errMsg)
+			pixelString = errMsg
+		}
+
 		s.ChannelMessageSend(m.ChannelID, "```"+pixelString+"```")
 	}
 }
