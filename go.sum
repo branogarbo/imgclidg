@@ -32,6 +32,8 @@ github.com/branogarbo/imgcli v1.23.1 h1:W6/+mXoq0Uby/59P58pNEDRPSRI/N7qI+jCrvfQG
 github.com/branogarbo/imgcli v1.23.1/go.mod h1:6E/UIv5ZQBsz1r57K6gLbYechnjgush+mBnzhwMeHBQ=
 github.com/branogarbo/imgcli v1.23.2 h1:iZd5ADDAKa7PkhOIQXCFMkF7htq2LxH6O+F/RWJ+zcA=
 github.com/branogarbo/imgcli v1.23.2/go.mod h1:yt6/s/2FpGhSVgc7GgVsM1J7YY3QQoLYl/b2keo54jQ=
+github.com/branogarbo/imgcli v1.23.3 h1:Taj3+8qf4ftagFhIU6jRr/8xSbeWVwv50fbPeFxB7bc=
+github.com/branogarbo/imgcli v1.23.3/go.mod h1:yt6/s/2FpGhSVgc7GgVsM1J7YY3QQoLYl/b2keo54jQ=
 github.com/bwmarrin/discordgo v0.23.2 h1:BzrtTktixGHIu9Tt7dEE6diysEF9HWnXeHuoJEt2fH4=
 github.com/bwmarrin/discordgo v0.23.2/go.mod h1:c1WtWUGN6nREDmzIpyTp/iD3VYt4Fpx+bVyfBG7JE+M=
 github.com/cespare/xxhash v1.1.0/go.mod h1:XrSqR1VqqWfGrhpAt58auRo0WTKS1nRRg3ghfAqPWnc=
