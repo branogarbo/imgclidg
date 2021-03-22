@@ -88,7 +88,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 		_, err = s.ChannelMessageSend(m.ChannelID, "```"+pixelString+"```")
 		if err != nil {
-			fmt.Println("could not send message,", err)
+			errMsg = fmt.Sprintf("could not send message: %v", err)
+
+			fmt.Println(errMsg)
+			s.ChannelMessageSend(m.ChannelID, errMsg)
 		}
 	}
 }
