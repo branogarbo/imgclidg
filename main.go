@@ -56,15 +56,15 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		err         error
 	)
 
-	if m.Author.ID == s.State.User.ID || len(m.Content) < 4 || m.Content[4:5] != " " {
+	if m.Author.ID == s.State.User.ID || len(m.Content) < 4 {
 		return
 	}
 
 	// using janky command code for now
 
-	msgHead = m.Content[:4]
+	msgHead = m.Content[:5]
 
-	if msgHead == "!img" {
+	if msgHead == "!img " {
 		if m.Content == msgHead {
 			err = errors.New("url not provided")
 		} else {
