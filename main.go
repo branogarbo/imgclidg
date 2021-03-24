@@ -25,7 +25,7 @@ func init() {
 func main() {
 	dg, err := discordgo.New("Bot " + Token)
 	if err != nil {
-		fmt.Println("error creating Discord session,", err)
+		fmt.Println("error creating Discord session:", err)
 		return
 	}
 
@@ -35,11 +35,11 @@ func main() {
 
 	err = dg.Open()
 	if err != nil {
-		fmt.Println("error opening connection,", err)
+		fmt.Println("error opening connection:", err)
 		return
 	}
 
-	fmt.Println("Bot is now running.  Press CTRL-C to exit.")
+	fmt.Println("Bot is now running. Press CTRL-C to exit.")
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
@@ -80,7 +80,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 
 		if err != nil {
-			errMsg = fmt.Sprintf("imgcli/util: failed to output image, %v", err)
+			errMsg = fmt.Sprintf("imgcli/util: failed to output image: %v", err)
 
 			fmt.Println(errMsg)
 			pixelString = errMsg
@@ -91,7 +91,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			errMsg = fmt.Sprintf("could not send message: %v", err)
 
 			fmt.Println(errMsg)
-			s.ChannelMessageSend(m.ChannelID, errMsg)
+			s.ChannelMessageSend(m.ChannelID, "```"+errMsg+"```")
 		}
 	}
 }
